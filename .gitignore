@@ -1,0 +1,23 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+node_modules/
+.vercel/
+site/.vercel/
+
+# the pull: cached pages and the parquet stay local (rebuild with scripts/fetch.py)
+data/cache/
+data/*.parquet
+data/*.duckdb
+data/_tmp_*
+data/*.log
+
+# the paid part: only the free slice ships in site/
+private/
+site/api/_full/
+
+# outreach: names and addresses stay local
+outreach/round1/ledger.csv
+outreach/round1/drafts/
+outreach/round1/*.csv

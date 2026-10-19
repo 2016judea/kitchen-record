@@ -1,0 +1,25 @@
+{
+ "built": "2026-10-19",
+ "pulled_on": "2026-10-18",
+ "first": "2023-01-03",
+ "last": "2026-10-13",
+ "n_restaurants": 1552,
+ "n_routine": 4531,
+ "city": {
+  "p10": 84.0,
+  "p50": 94.0,
+  "p90": 100.0,
+  "p1_rate": 0.593
+ },
+ "n_repeat": 656,
+ "n_nb": 32,
+ "rule_score": 91,
+ "fu_window": 45,
+ "fu_rate_le": 0.883,
+ "fu_rate_gt": 0.013,
+ "min_peers": 15,
+ "example": "LIC386562",
+ "price_usd": 40,
+ "product": "kitchen-record",
+ "codes_hand_written": 643
+}
