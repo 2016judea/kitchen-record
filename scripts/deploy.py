@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Deploy site/ to Vercel over the REST API (no CLI). Needs VERCEL_TOKEN (~/Desktop/bricks/.env).
 site/ is the free slice plus api/; private/bundle/ (the paid part) goes up as api/_full/,
-bundled with /api/data and redirected away from any public URL (site/vercel.json).
+bundled with /api/data only. outputDirectory is "public": with "." every uploaded file,
+api/_full/ included, was a static URL (/api/%5Ffull/full.json.gz answered 200, 2026-10-19).
 Ported from ~/Desktop/msp-house-index/scripts/deploy.py."""
 import hashlib, json, os, sys, time
 from concurrent.futures import ThreadPoolExecutor
@@ -56,7 +57,7 @@ def main():
     print(f"uploaded {len(files)} files")
     d = requests.post(f"{API}/v13/deployments?teamId={TEAM}&forceNew=1", headers=H, json={
         "name": PROJECT, "project": PROJECT, "target": "production", "files": files,
-        "projectSettings": {"framework": None, "buildCommand": "echo build", "outputDirectory": ".", "installCommand": "echo skip"},
+        "projectSettings": {"framework": None, "buildCommand": "echo build", "outputDirectory": "public", "installCommand": "echo skip"},
     }).json()
     print("deployment", d.get("id"), d.get("readyState"), d.get("error"))
     s = {}

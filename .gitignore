@@ -21,3 +21,5 @@ site/api/_full/
 outreach/round1/ledger.csv
 outreach/round1/drafts/
 outreach/round1/*.csv
+data/*.png
+data/pulled_on.txt

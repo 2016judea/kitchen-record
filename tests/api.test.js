@@ -58,7 +58,7 @@ test("a comp password opens one restaurant's paid part and nothing free leaks ba
   const mac = Array.from(crypto.createHmac("sha256", process.env.ACCESS_SECRET).update("comp:" + nonce).digest().subarray(0, 7), (b) => ALPHA[b % ALPHA.length]).join("");
   const pw = nonce + mac;
   assert.deepEqual(lib.checkPassword(pw), { nonce, kind: "comp" });
-  const meta = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "site", "meta.json")));
+  const meta = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "site", "public", "meta.json")));
   const r = res();
   await data(req({ id: meta.example }, { "x-password": pw }), r);
   assert.equal(r.code, 200, JSON.stringify(r.body));
@@ -90,5 +90,5 @@ test("session-status rejects a malformed session id", async () => {
 
 test("the product id matches the router registration name", () => {
   assert.equal(lib.PRODUCT, "kitchen-record");
-  assert.equal(lib.offer.price_usd, JSON.parse(fs.readFileSync(path.join(__dirname, "..", "site", "meta.json"))).price_usd);
+  assert.equal(lib.offer.price_usd, JSON.parse(fs.readFileSync(path.join(__dirname, "..", "site", "public", "meta.json"))).price_usd);
 });

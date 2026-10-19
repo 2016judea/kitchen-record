@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 from build import PAID_KEYS  # noqa: E402
 
-FREE = ROOT / "site" / "data" / "free.json"
+FREE = ROOT / "site" / "public" / "data" / "free.json"
 FULL = ROOT / "private" / "bundle" / "full.json.gz"
 pytestmark = pytest.mark.skipif(not (FREE.exists() and FULL.exists()), reason="run scripts/build.py first")
 
@@ -47,4 +47,15 @@ def test_paid_bundle_is_not_in_site_or_git():
     assert not (ROOT / "site" / "api" / "_full").exists()
     tracked = subprocess.run(["git", "ls-files"], cwd=ROOT, capture_output=True, text=True).stdout.split()
     assert not any(p.startswith("private/") or p.startswith("outreach/round1/") or p.startswith("data/cache") for p in tracked), tracked
-    assert "site/data/free.json" in tracked or not tracked  # before the first commit the list is empty
+    assert "site/public/data/free.json" in tracked or not tracked  # before the first commit the list is empty
+
+
+def test_only_site_public_is_served_statically():
+    # With outputDirectory "." Vercel served every uploaded file, so /api/%5Ffull/full.json.gz
+    # handed out the paid bundle (proven by curl on production, 2026-10-19). Pin both halves.
+    vj = json.loads((ROOT / "site" / "vercel.json").read_text())
+    assert vj["outputDirectory"] == "public"
+    assert '"outputDirectory": "public"' in (ROOT / "scripts" / "deploy.py").read_text()
+    pub = ROOT / "site" / "public"
+    assert (pub / "index.html").exists() and (pub / "data" / "free.json").exists()
+    assert not any(p.suffix == ".gz" or "_full" in p.parts or p.name == "_lib.js" for p in pub.rglob("*"))

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""site/for.json: recipient token -> {id, variant} from the (gitignored) outreach ledger.
+"""site/public/for.json: recipient token -> {id, variant} from the (gitignored) outreach ledger.
 
 The /for/<token>/ page opens on that recipient's own restaurant and fires
 va.track('preview_open', {variant}) so A/B splits without the variant appearing in the URL.
@@ -18,7 +18,7 @@ def main():
         for r in csv.DictReader(LEDGER.open()):
             if r.get("token") and r.get("facility_id"):
                 out[r["token"]] = {"id": r["facility_id"], "v": r.get("variant", "")}
-    (ROOT / "site" / "for.json").write_text(json.dumps(out, separators=(",", ":")) + "\n")
+    (ROOT / "site" / "public" / "for.json").write_text(json.dumps(out, separators=(",", ":")) + "\n")
     print(f"for.json: {len(out)} tokens")
 
 

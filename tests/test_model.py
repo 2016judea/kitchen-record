@@ -95,7 +95,7 @@ def test_codes_dictionary_is_plain():
 
 
 def test_page_build_has_no_typed_numbers():
-    html = (ROOT / "site" / "index.html").read_text()
+    html = (ROOT / "site" / "public" / "index.html").read_text()
     assert "_vercel/insights/script.js" in html
     assert "bm-posthog:begin" in html and 'site:S' in html and 'S="kitchen-record"' in html
     for ev in ("preview_open", "checkout_open", "paid", "unlock", "open_restaurant"):
@@ -107,8 +107,8 @@ def test_page_build_has_no_typed_numbers():
 
 
 def test_shipped_files_match_build(out):
-    free = ROOT / "site" / "data" / "free.json"
-    meta = ROOT / "site" / "meta.json"
+    free = ROOT / "site" / "public" / "data" / "free.json"
+    meta = ROOT / "site" / "public" / "meta.json"
     if not free.exists():
         pytest.skip("not built")
     shipped = json.loads(free.read_text())

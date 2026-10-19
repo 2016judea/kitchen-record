@@ -2,10 +2,10 @@
 """Build the model from data/inspections.parquet.
 
 Writes
-  site/data/free.json      the free slice for every restaurant (score history, neighbourhood
+  site/public/data/free.json      the free slice for every restaurant (score history, neighbourhood
                            p10/50/90, most-repeated Priority-1 code in plain words, counts only
                            for the paid part) plus the lookup index
-  site/meta.json           counts, dates, price, the example restaurant
+  site/public/meta.json         counts, dates, price, the example restaurant
   private/bundle/full.json.gz   the paid part, keyed by restaurant id: fix list, follow-up risk,
                            named peer table (served only by /api/data)
   data/model.duckdb        the tables, for tests and QA
@@ -151,17 +151,17 @@ PAID_KEYS = {"fix", "risk", "peers"}  # never in free.json (tests/test_paywall.p
 
 def main():
     out = build(ROOT / "data" / "inspections.parquet", ROOT / "data" / "model.duckdb")
-    (ROOT / "site" / "data").mkdir(parents=True, exist_ok=True)
+    (ROOT / "site" / "public" / "data").mkdir(parents=True, exist_ok=True)
     (ROOT / "private" / "bundle").mkdir(parents=True, exist_ok=True)
-    (ROOT / "site" / "data" / "free.json").write_text(json.dumps(out["free"], separators=(",", ":")))
-    (ROOT / "site" / "meta.json").write_text(json.dumps(out["meta"], indent=1))
+    (ROOT / "site" / "public" / "data" / "free.json").write_text(json.dumps(out["free"], separators=(",", ":")))
+    (ROOT / "site" / "public" / "meta.json").write_text(json.dumps(out["meta"], indent=1))
     with gzip.open(ROOT / "private" / "bundle" / "full.json.gz", "wt") as f:
         json.dump(out["full"], f, separators=(",", ":"))
     m = out["meta"]
     print(f"{m['n_restaurants']} restaurants, {m['n_routine']} routine inspections {m['first']}..{m['last']}; "
           f"{m['n_repeat']} repeat a P1 code; {m['n_nb']} neighbourhoods with >= {MIN_PEERS}; "
           f"follow-up within {FU_WINDOW}d: {m['fu_rate_le']:.1%} at <= {CITY_RULE_SCORE}, {m['fu_rate_gt']:.1%} above; example {m['example']}")
-    print("free.json", (ROOT / "site" / "data" / "free.json").stat().st_size // 1024, "KB; full.json.gz", (ROOT / "private" / "bundle" / "full.json.gz").stat().st_size // 1024, "KB")
+    print("free.json", (ROOT / "site" / "public" / "data" / "free.json").stat().st_size // 1024, "KB; full.json.gz", (ROOT / "private" / "bundle" / "full.json.gz").stat().st_size // 1024, "KB")
 
 
 if __name__ == "__main__":
