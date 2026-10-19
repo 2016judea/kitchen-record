@@ -49,10 +49,11 @@ checkouts opened vs paid, by variant (see Distribution).
 
 ## The paywall
 
-Ported from `~/Desktop/msp-house-index` (product-paywall skill). `site/` ships the free
-slice (`site/data/free.json`) and `site/meta.json`; `scripts/build.py` writes the paid
+Ported from `~/Desktop/msp-house-index` (product-paywall skill). Only `site/public/` is served
+statically (the free slice `site/public/data/free.json` and `site/public/meta.json`); `scripts/build.py` writes the paid
 part to `private/bundle/full.json.gz` (gitignored), which `scripts/deploy.py` uploads as
-`api/_full/`, read only by `/api/data`.
+`api/_full/`, read only by `/api/data`. With `outputDirectory: "."` that file was a public URL
+(`/api/%5Ffull/full.json.gz`, 200, found and closed 2026-10-19); `tests/test_paywall.py` pins it.
 
 | route | does |
 |---|---|
@@ -83,7 +84,13 @@ make deploy     # REST upload to Vercel (VERCEL_TOKEN from ~/Desktop/bricks/.env
 
 ## Distribution
 
-Round 1 is drafted, not sent, in `outreach/round1/` (gitignored ledger and drafts). Three
+Round 1 is drafted, not sent, in `outreach/round1/` (gitignored ledger and drafts): 50
+recipients, 39 restaurants, 6 restaurant groups, 5 food-safety trainers. Every email was read on
+the recipient's own site on 2026-10-19 (`outreach/verify_sites.py`; Overture's listing email was
+only a lead, and matched a DoubleTree to starbucks.com), deduped against the outreach ledger by
+address and domain. `outreach/draft_round1.py` writes them; `scripts/build_for.py` ships the
+token map. Trainers have no inspection row of their own, so their page opens on the worked
+example and their opener quotes their own course page. Three
 segments: Minneapolis restaurants with an email on their own site or listing, restaurant
 groups and commissaries, and Minnesota food-safety consultants and trainers. Each
 recipient's `/for/<token>/` page opens on their own restaurant; a recipient with no

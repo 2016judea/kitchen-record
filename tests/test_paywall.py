@@ -59,3 +59,11 @@ def test_only_site_public_is_served_statically():
     pub = ROOT / "site" / "public"
     assert (pub / "index.html").exists() and (pub / "data" / "free.json").exists()
     assert not any(p.suffix == ".gz" or "_full" in p.parts or p.name == "_lib.js" for p in pub.rglob("*"))
+
+
+def test_for_json_carries_only_token_id_and_variant():
+    fj = json.loads((ROOT / "site" / "public" / "for.json").read_text())
+    free_ids = {r["id"] for r in json.loads(FREE.read_text())["rows"]}
+    for t, v in fj.items():
+        assert set(v) <= {"id", "v"} and v["id"] in free_ids and v.get("v", "") in ("", "A", "B")
+    assert "@" not in (ROOT / "site" / "public" / "for.json").read_text()
