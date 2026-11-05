@@ -8,8 +8,8 @@
     python scripts/fulfil.py --comp-password <label>   # a password that unlocks with no Stripe session
 
 The password lives in the session's metadata (minted by site/api/checkout.js) and in the
-invoice footer Stripe emailed the buyer. Reads STRIPE_SECRET_KEY from ~/Desktop/bricks/.env
-and ACCESS_SECRET from ./.env. Ported from ~/Desktop/msp-house-index/scripts/fulfil.py.
+invoice footer Stripe emailed the buyer. Reads STRIPE_SECRET_KEY from ~/Desktop/workspace/bricks/.env
+and ACCESS_SECRET from ./.env. Ported from ~/Desktop/workspace/msp-house-index/scripts/fulfil.py.
 """
 import hashlib, hmac, json, secrets, sys
 from datetime import date
@@ -38,7 +38,7 @@ def password(nonce, domain=""):
 
 def stripe_session():
     s = requests.Session()
-    s.auth = (env("~/Desktop/bricks/.env", "STRIPE_SECRET_KEY"), "")
+    s.auth = (env("~/Desktop/workspace/bricks/.env", "STRIPE_SECRET_KEY"), "")
     return s
 
 

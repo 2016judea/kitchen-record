@@ -49,7 +49,7 @@ checkouts opened vs paid, by variant (see Distribution).
 
 ## The paywall
 
-Ported from `~/Desktop/msp-house-index` (product-paywall skill). Only `site/public/` is served
+Ported from `~/Desktop/workspace/msp-house-index` (product-paywall skill). Only `site/public/` is served
 statically (the free slice `site/public/data/free.json` and `site/public/meta.json`); `scripts/build.py` writes the paid
 part to `private/bundle/full.json.gz` (gitignored), which `scripts/deploy.py` uploads as
 `api/_full/`, read only by `/api/data`. With `outputDirectory: "."` that file was a public URL
@@ -58,7 +58,7 @@ part to `private/bundle/full.json.gz` (gitignored), which `scripts/deploy.py` up
 | route | does |
 |---|---|
 | `POST /api/checkout` | Stripe embedded Checkout on the Brick & Mortar account; mints the buyer's password (nonce + HMAC under `ACCESS_SECRET`) into the session metadata and the invoice footer |
-| `POST /api/stripe-webhook` | `checkout.session.completed`, delivered through `~/Desktop/stripe-router` (no per-product endpoint): emails the password once, and Aidan a sale notice |
+| `POST /api/stripe-webhook` | `checkout.session.completed`, delivered through `~/Desktop/workspace/stripe-router` (no per-product endpoint): emails the password once, and Aidan a sale notice |
 | `GET /api/session-status` | the return page: paid or not; sends the password email if the webhook has not |
 | `GET /api/data?id=LIC…` | password in `x-password`: one restaurant's fix list, risk and peers; without `id`, all of them |
 
@@ -79,7 +79,7 @@ make fetch      # ~1 min: 25 pages from the city's ArcGIS layer, cached per day
 make build      # seconds: site/data/free.json, site/meta.json, private/bundle/full.json.gz
 make test       # pytest + node --test, logs in data/pytest.log and data/node.log
 node scripts/serve_local.mjs   # the real page and API handlers on :8787
-make deploy     # REST upload to Vercel (VERCEL_TOKEN from ~/Desktop/bricks/.env)
+make deploy     # REST upload to Vercel (VERCEL_TOKEN from ~/Desktop/workspace/bricks/.env)
 ```
 
 ## Distribution

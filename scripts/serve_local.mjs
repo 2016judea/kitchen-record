@@ -2,7 +2,7 @@
 //   node scripts/serve_local.mjs [port]
 // Serves site/public/ statically, rewrites /for/<token> to index.html like site/vercel.json, and routes
 // /api/<name> to site/api/<name>.js with a Vercel-shaped (req, res). FULL_DIR points /api/data at
-// private/bundle/. Env comes from ./.env plus ~/Desktop/bricks/.env (Stripe/Mailgun) if present.
+// private/bundle/. Env comes from ./.env plus ~/Desktop/workspace/bricks/.env (Stripe/Mailgun) if present.
 import http from "node:http";
 import fs from "node:fs";
 import path from "node:path";
@@ -13,7 +13,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = path.join(ROOT, "site");
 const PUB = path.join(SITE, "public"); // the only static tree, like outputDirectory "public"
 const require = createRequire(import.meta.url);
-for (const f of [path.join(ROOT, ".env"), path.join(process.env.HOME, "Desktop/bricks/.env")]) {
+for (const f of [path.join(ROOT, ".env"), path.join(process.env.HOME, "Desktop/workspace/bricks/.env")]) {
   if (!fs.existsSync(f)) continue;
   for (const line of fs.readFileSync(f, "utf8").split("\n")) {
     const m = /^([A-Z_]+)=(.*)$/.exec(line.trim());

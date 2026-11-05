@@ -1,4 +1,4 @@
-// Shared by the paywall functions. Ported from ~/Desktop/msp-house-index/site/api/_lib.js
+// Shared by the paywall functions. Ported from ~/Desktop/workspace/msp-house-index/site/api/_lib.js
 // (product-paywall skill). Files starting with "_" are not routes on Vercel.
 //
 // The password is stateless: XXXX-XXXX-XXXX, where the first five characters are a
@@ -9,7 +9,7 @@ const crypto = require("crypto");
 const offer = require("../offer.json");
 
 const SITE = process.env.SITE_URL || offer.site;
-const PRODUCT = offer.product; // = the name registered with ~/Desktop/stripe-router
+const PRODUCT = offer.product; // = the name registered with ~/Desktop/workspace/stripe-router
 const ALPHA = "23456789BCDFGHJKMNPQRSTVWXYZ"; // no 0/O, 1/I/L, and no vowels A/E/U, so no password spells a word
 
 function stripeKey() {

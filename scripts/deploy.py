@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Deploy site/ to Vercel over the REST API (no CLI). Needs VERCEL_TOKEN (~/Desktop/bricks/.env).
+"""Deploy site/ to Vercel over the REST API (no CLI). Needs VERCEL_TOKEN (~/Desktop/workspace/bricks/.env).
 site/ is the free slice plus api/; private/bundle/ (the paid part) goes up as api/_full/,
 bundled with /api/data only. outputDirectory is "public": with "." every uploaded file,
 api/_full/ included, was a static URL (/api/%5Ffull/full.json.gz answered 200, 2026-10-19).
-Ported from ~/Desktop/msp-house-index/scripts/deploy.py."""
+Ported from ~/Desktop/workspace/msp-house-index/scripts/deploy.py."""
 import hashlib, json, os, sys, time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -20,7 +20,7 @@ API = "https://api.vercel.com"
 def token():
     if os.environ.get("VERCEL_TOKEN"):
         return os.environ["VERCEL_TOKEN"]
-    for line in (Path.home() / "Desktop/bricks/.env").read_text().splitlines():
+    for line in (Path.home() / "Desktop/workspace/bricks/.env").read_text().splitlines():
         if line.startswith("VERCEL_TOKEN="):
             return line.split("=", 1)[1].strip()
     sys.exit("VERCEL_TOKEN missing")

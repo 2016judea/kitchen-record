@@ -5,7 +5,7 @@ Inputs (all gitignored, local):
   outreach/round1/verified_named.csv  restaurants whose OWN site printed the email today (verify_sites.py)
   GROUPS / TRAINERS below             read off their own sites 2026-10-19 (kr_emails.sh / page title)
 Writes outreach/round1/ledger.csv and outreach/round1/drafts/<token>.txt, then run scripts/build_for.py.
-Dedupe against ~/Desktop/outreach-ledger/outreach.duckdb `contacted`, by email AND by domain.
+Dedupe against ~/Desktop/workspace/outreach-ledger/outreach.duckdb `contacted`, by email AND by domain.
 A/B (one variable, pooled across the seven shelf products): A names the price in the email, B leaves it to the page.
 """
 import csv, datetime, hashlib, json, re
@@ -91,7 +91,7 @@ def body(greet, l1, l2, link, variant, offer_thing):
 
 
 def main():
-    led = duckdb.connect(str(Path.home() / "Desktop/outreach-ledger/outreach.duckdb"), read_only=True)
+    led = duckdb.connect(str(Path.home() / "Desktop/workspace/outreach-ledger/outreach.duckdb"), read_only=True)
     seen = {r[0].lower() for r in led.execute("select recipient_key from contacted").fetchall() if r[0]}
     seen_dom = {e.split("@")[1] for e in seen if "@" in e} - FREEMAIL
     rows, used = [], set()

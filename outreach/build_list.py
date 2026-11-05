@@ -4,10 +4,10 @@ matched to their own inspection row by street address. Writes outreach/round1/ca
 (gitignored) for the drafter. Nothing here sends anything.
 
 Sources (read-only):
-  ~/Desktop/bricks/data/cache/overture_places_msp.parquet   Overture Places (CC BY 4.0): emails[], websites[]
-  ~/Desktop/bricks/data/mail_list_with_emails.csv           the May 2026 mailer list (21 restaurant emails)
+  ~/Desktop/workspace/bricks/data/cache/overture_places_msp.parquet   Overture Places (CC BY 4.0): emails[], websites[]
+  ~/Desktop/workspace/bricks/data/mail_list_with_emails.csv           the May 2026 mailer list (21 restaurant emails)
   data/model.duckdb                                         this repo's model (restaurants, scores, repeats)
-Dedupe: ~/Desktop/outreach-ledger/outreach.duckdb `contacted` (mandatory, outreach-ledger skill).
+Dedupe: ~/Desktop/workspace/outreach-ledger/outreach.duckdb `contacted` (mandatory, outreach-ledger skill).
 """
 import csv, re
 from pathlib import Path
